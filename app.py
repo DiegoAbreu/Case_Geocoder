@@ -98,25 +98,28 @@ def consulta(x):
         st.markdown("Confira a lista completa ordenada por proximidade:")
         lista_completa = usu_recs[['Endereço', 'Ponto', 'Distancia(km)']]
         lista_completa
-
-        # Texto sobre o uso do Geocoder Oi
         st.markdown("***")
-        st.header('Onde e como foi utilizado o Portal Oi de Geocodificação nessa aplicação?')
-        st.markdown("A Geocodificação de endereços foi aplicada em dois momentos nessa solução:")
-        st.markdown("**1 - ** Obter os pontos de latitude e longitude dos endereços das escolas. Para isso utilizamos o recurso de processamento em lote do Portal. Onde fazemos o uploadde nossa tabela de endereços e após o processamento recebemos um arquivo com seus respectivos valores de coordenadas.")
-        entrada_basica = recursos_df['Ponto']
-        entrada_basica
-        entrada_latlng = recursos_df[['Ponto', 'Latitude', 'Longitude']]
-        entrada_latlng
-        st.markdown("Com essas informações de Latitude e Longititude agora disponíveis é possivel exibir os endereços graficamente como pontos em uma mapa.")
-        st.plotly_chart(fig1)
-        st.markdown("**2 - ** A segunda geocodificação ocorre sempre que um usuário pesquisa por um endereço. Para essa etapa utilizamos o recurso de consumo via API que nos permite geocodificar fora da Portal, ou seja dentro de nossa aplicação.")
-        st.markdown("Com a latitude e longitude do endereço pesquisado, podemos então calcular as distâncias entre os pontos, ordená-los e apresentar o resultado final.")
-        st.plotly_chart(fig2)
         
-        # Texto sobre valor
-        st.markdown("***")
-        #st.header('O valor e as possibilidades desse tipo de Aplicação')
+        # Detalhes técnicos
+        if st.checkbox('Ver detalhes técnicos'):
+            # Texto sobre o uso do Geocoder Oi
+            #st.markdown("***")
+            st.header('Onde e como foi utilizado o Portal Oi de Geocodificação nessa aplicação?')
+            st.markdown("A Geocodificação de endereços foi aplicada em dois momentos nessa solução:")
+            st.markdown("**1 - ** Obter os pontos de latitude e longitude dos endereços das escolas. Para isso utilizamos o recurso de processamento em lote do Portal. Onde fazemos o uploadde nossa tabela de endereços e após o processamento recebemos um arquivo com seus respectivos valores de coordenadas.")
+            entrada_basica = recursos_df['Ponto']
+            entrada_basica
+            entrada_latlng = recursos_df[['Ponto', 'Latitude', 'Longitude']]
+            entrada_latlng
+            st.markdown("Com essas informações de Latitude e Longititude agora disponíveis é possivel exibir os endereços graficamente como pontos em uma mapa.")
+            st.plotly_chart(fig1)
+            st.markdown("**2 - ** A segunda geocodificação ocorre sempre que um usuário pesquisa por um endereço. Para essa etapa utilizamos o recurso de consumo via API que nos permite geocodificar fora da Portal, ou seja dentro de nossa aplicação.")
+            st.markdown("Com a latitude e longitude do endereço pesquisado, podemos então calcular as distâncias entre os pontos, ordená-los e apresentar o resultado final.")
+            st.plotly_chart(fig2)
+            
+            # Texto sobre valor
+            st.markdown("***")
+            #st.header('O valor e as possibilidades desse tipo de Aplicação')
 
         return
 consulta(endereco_usuario)
