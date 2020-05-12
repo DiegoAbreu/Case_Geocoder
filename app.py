@@ -29,7 +29,7 @@ fig1.update_layout(mapbox_style="carto-positron")
 fig1.update_layout(margin={"r":0,"t":25,"l":0,"b":0})
 st.plotly_chart(fig1)
 
-st.markdown("No mapa acima temos a localização de 100 escolas públicas da cidade do Rio de Janeiro.Insira um endereço no campo a a seguir e descubra quais escolas mais próximas.")
+st.markdown("No mapa acima temos a localização de 100 escolas públicas da cidade do Rio de Janeiro. Insira um endereço no campo a a seguir e descubra quais escolas mais próximas.")
 
 # Endereço para geocodificar:
 endereco_usuario = st.text_input('Faça sua busca:','')
