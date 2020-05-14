@@ -14,7 +14,6 @@ st.header('Aplicação para encontrar endereços mais próximos')
 
 # Recursos
 recursos_df = pd.read_csv('recursos.csv')
-recursos_df
 recursos_df['Bolha'] = 0.02
 
 # Introdução
