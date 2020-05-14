@@ -13,9 +13,9 @@ st.title('Caso de uso do Portal Oi de Geocodificação:')
 st.header('Aplicação para encontrar endereços mais próximos')
 
 # Recursos
-recursos_df = pd.read_csv('recursos.csv', sep=';', encoding = "ISO-8859-1")
-recursos_df['Localidade'] = 'Recursos'
-recursos_df['Bolha'] = 0.05
+recursos_df = pd.read_csv('recursos.csv')
+recursos_df
+recursos_df['Bolha'] = 0.02
 
 # Introdução
 st.markdown("Um uso bastante comum de dados geocodificados é o cálculo de distância entre dois ou mais pontos. Diversos sites utilizam esse recurso para permitir que os usuários possam pesquisar e encontrar locais próximos.")
@@ -24,12 +24,12 @@ st.write('Veja o exemplo a seguir:')
 
 # Plot Recursos
 import plotly.express as px
-fig1 = px.scatter_mapbox(recursos_df, lat="Latitude", lon="Longitude", hover_name="Ponto", zoom=10, height=500)
+fig1 = px.scatter_mapbox(recursos_df, lat="Latitude", lon="Longitude", hover_name="RUA", zoom=2.8, height=500)
 fig1.update_layout(mapbox_style="carto-positron")
 fig1.update_layout(margin={"r":0,"t":25,"l":0,"b":0})
 st.plotly_chart(fig1)
 
-st.markdown("No mapa acima temos a localização de 100 escolas públicas da cidade do Rio de Janeiro. Insira um endereço no campo a a seguir e descubra quais escolas mais próximas.")
+st.markdown("No mapa acima temos a localização Lojas Oi de todo o Brasil. Insira um endereço no campo a a seguir e descubra quais Lojas Oi mais próximas.")
 
 # Endereço para geocodificar:
 endereco_usuario = st.text_input('Faça sua busca:','')
@@ -49,10 +49,10 @@ def consulta(x):
         # Resultados:
         resultado = pd.DataFrame(response.json())
         Loc_usuario = pd.DataFrame()
-        Loc_usuario['Ponto'] = resultado['endereco']
+        Loc_usuario['Endereço Completo'] = resultado['endereco']
         Loc_usuario['Latitude'] = resultado['latitude']
         Loc_usuario['Longitude'] = resultado['longitude']
-        Loc_usuario['Bolha'] = 0.3
+        Loc_usuario['Bolha'] = 0.4
         Loc_usuario['Localidade'] = "Você"
 
         # Usuário + Recursos
@@ -73,30 +73,32 @@ def consulta(x):
         usu_recs["Distancia(km)"] = usu_recs["Distancia(km)"].replace('00','')
 
         # Tag top 5
-        usu_recs.loc[usu_recs.index <= 5, 'Localidade'] = 'Escolas mais próximas' 
-        usu_recs.loc[usu_recs.index > 5, 'Localidade'] = 'Escolas' 
+        
+        usu_recs.loc[usu_recs.index <= 5, 'Localidade'] = 'Lojas Oi mais próximas' 
+        usu_recs.loc[usu_recs.index > 5, 'Localidade'] = 'Lojas Oi' 
         usu_recs.loc[usu_recs.index == 0, 'Localidade'] = 'Você' 
         usu_recs = usu_recs.rename(columns={'Ponto': 'Endereço', 'Localidade': 'Ponto' })
 
         # Top 5 mais próximas
         st.markdown("***")
-        st.write('Essas são as 5 escolas mais próximas do seu endereço:')
+        st.write('Essas são as 5 Lojas Oi mais próximas do seu endereço:')
 
         # DataFrame Top5
         top_5 = (usu_recs.loc[1:]).head()
-        top_5 = top_5[['Endereço', 'Ponto','Distancia(km)']]
+        top_5 = top_5[['Endereço Completo', 'Ponto','Distancia(km)']]
         top_5
         st.markdown("Veja no Mapa:")
 
         # Plot
+        usu_recs2 = usu_recs.sort_values(by='Distancia(km)', ascending=False)
         import plotly.express as px
-        fig2 = px.scatter_mapbox(usu_recs, lat="Latitude", lon="Longitude", hover_name="Endereço", zoom=10, height=500, color="Ponto", size= 'Bolha')
+        fig2 = px.scatter_mapbox(usu_recs2, lat="Latitude", lon="Longitude", hover_name="Endereço Completo", zoom=2.8, height=500, color="Ponto", size="Bolha")
         fig2.update_layout(mapbox_style="carto-positron")
         fig2.update_layout(margin={"r":0,"t":25,"l":0,"b":0})
         fig2.update_layout({'legend_orientation':'h'})
         st.plotly_chart(fig2)
         st.markdown("Confira a lista completa ordenada por proximidade:")
-        lista_completa = usu_recs[['Endereço', 'Ponto', 'Distancia(km)']]
+        lista_completa = usu_recs[['Endereço Completo', 'Ponto', 'Distancia(km)']]
         lista_completa
         st.markdown("***")
         
@@ -106,10 +108,10 @@ def consulta(x):
             #st.markdown("***")
             st.header('Onde e como foi utilizado o Portal Oi de Geocodificação nessa aplicação?')
             st.markdown("A Geocodificação de endereços foi aplicada em dois momentos nessa solução:")
-            st.markdown("**1 - ** Obter os pontos de latitude e longitude dos endereços das escolas. Para isso utilizamos o recurso de processamento em lote do Portal. Onde fazemos o uploadde nossa tabela de endereços e após o processamento recebemos um arquivo com seus respectivos valores de coordenadas.")
-            entrada_basica = recursos_df['Ponto']
+            st.markdown("**1 - ** Obter os pontos de latitude e longitude dos endereços das Lojas Oi. Para isso utilizamos o recurso de processamento em lote do Portal. Onde fazemos o uploadde nossa tabela de endereços e após o processamento recebemos um arquivo com seus respectivos valores de coordenadas.")
+            entrada_basica = recursos_df['Endereço Completo']
             entrada_basica
-            entrada_latlng = recursos_df[['Ponto', 'Latitude', 'Longitude']]
+            entrada_latlng = recursos_df[['Endereço Completo', 'Latitude', 'Longitude']]
             entrada_latlng
             st.markdown("Com essas informações de Latitude e Longititude agora disponíveis é possivel exibir os endereços graficamente como pontos em uma mapa.")
             st.plotly_chart(fig1)
