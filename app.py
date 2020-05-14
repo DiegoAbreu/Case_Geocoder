@@ -53,6 +53,7 @@ def consulta(x):
         Loc_usuario['Longitude'] = resultado['longitude']
         Loc_usuario['Bolha'] = 0.4
         Loc_usuario['Localidade'] = "Você"
+        Loc_usuario['NOME FANTASIA'] = "-"
 
         # Usuário + Recursos
         usu_recs = pd.concat([Loc_usuario, recursos_df])
@@ -84,7 +85,7 @@ def consulta(x):
 
         # DataFrame Top5
         top_5 = (usu_recs.loc[1:]).head()
-        top_5 = top_5[['Endereço Completo', 'Ponto','Distancia(km)']]
+        top_5 = top_5[['Endereço Completo', 'NOME FANTASIA','Distancia(km)']]
         top_5
         st.markdown("Veja no Mapa:")
 
@@ -97,7 +98,7 @@ def consulta(x):
         fig2.update_layout({'legend_orientation':'h'})
         st.plotly_chart(fig2)
         st.markdown("Confira a lista completa ordenada por proximidade:")
-        lista_completa = usu_recs[['Endereço Completo', 'Ponto', 'Distancia(km)']]
+        lista_completa = usu_recs[['Endereço Completo', 'NOME FANTASIA','Ponto', 'Distancia(km)']]
         lista_completa
         st.markdown("***")
         
