@@ -133,7 +133,6 @@ def consulta(x):
             st.markdown("* Python - Linguagem de Programação;\n* Streamlit - Framework de Interface Visual;\n* GitHub - Hospedagem de código e arquivos;\n* Heroku - Ambiente de produção;\n* Portal Oi de Geocodificação - Conversão de endereços em coordenadas.")
             st.markdown("Código do projeto disponível [aqui.](https://github.com/DiegoAbreu/Case_Geocoder )")
             st.markdown("***")
-            #st.header('O valor e as possibilidades desse tipo de Aplicação')
 
         return
 consulta(endereco_usuario)
